@@ -1,18 +1,17 @@
 from flask import Flask, render_template, request
-import pickle
+import joblib  # Changed from pickle to joblib for compressed files
 
 app = Flask(__name__)
 
-# Load all models
+# Load all models - MODIFIED TO USE COMPRESSED FILES
 models = {}
 model_names = ['logistic_regression', 'random_forest', 'svm', 'xgboost']
 
 for name in model_names:
-    with open(f'model/{name}_model.pkl', 'rb') as f:
-        vectorizer, model = pickle.load(f)
-        models[name] = model
+    vectorizer, model = joblib.load(f'model/{name}_model_compressed.pkl')
+    models[name] = model
 
-# Use common vectorizer from one of the models (they're trained the same)
+# Rest of your existing code remains exactly the same...
 common_vectorizer = vectorizer
 
 @app.route('/')
@@ -21,6 +20,7 @@ def home():
 
 @app.route('/predict', methods=['POST'])
 def predict():
+    # ... (keep all your existing prediction logic)
     news_text = request.form['news']
     news_vector = common_vectorizer.transform([news_text])
     
