@@ -14,7 +14,7 @@ common_vectorizer = None
 for name in model_names:
     try:
         # Load model and its corresponding vectorizer
-        model_data = joblib.load(f'model/{name}_model_compressed.pkl')
+        model_data = joblib.load(f'model/{name}_model_compressed.joblib')
         
         # First item is vectorizer, second is model
         vectorizer, model = model_data  
